@@ -25,6 +25,11 @@ class LabelCreate(BaseModel):
     color: str
 
 
+class LabelUpdate(BaseModel):
+    name: str | None = None
+    color: str | None = None
+
+
 class LabelRead(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 

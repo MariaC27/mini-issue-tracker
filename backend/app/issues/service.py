@@ -15,6 +15,7 @@ def list_issues(
     status: IssueStatus | None = None,
     priority: IssuePriority | None = None,
     label_id: uuid.UUID | None = None,
+    search: str | None = None,
 ) -> list[Issue]:
     query = db.query(Issue)
     if status is not None:
@@ -23,6 +24,8 @@ def list_issues(
         query = query.filter(Issue.priority == priority)
     if label_id is not None:
         query = query.filter(Issue.labels.any(id=label_id))
+    if search is not None:
+        query = query.filter(Issue.title.ilike(f"%{search}%"))
     return query.order_by(Issue.created_at.desc()).all()
 
 
