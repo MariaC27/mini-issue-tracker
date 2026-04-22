@@ -2,34 +2,33 @@
 // ABOUTME: All pages inherit this layout.
 
 import type { Metadata } from "next";
-import { ClerkProvider, SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { ClerkProvider, SignInButton, UserButton } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import "./globals.css";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Mini Issue Tracker",
   description: "A simple issue tracking app",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const { userId } = await auth();
+
   return (
     <ClerkProvider>
       <html lang="en">
         <body className="min-h-screen bg-background font-sans antialiased">
           <header className="border-b px-6 py-3 flex items-center justify-between">
-            <a href="/" className="font-semibold text-lg">
+            <Link href="/" className="font-semibold text-lg">
               Issue Tracker
-            </a>
+            </Link>
             <div>
-              <SignedOut>
-                <SignInButton mode="modal">
-                  <button className="text-sm px-3 py-1.5 rounded border hover:bg-muted">
-                    Sign in
-                  </button>
-                </SignInButton>
-              </SignedOut>
-              <SignedIn>
+              {userId ? (
                 <UserButton />
-              </SignedIn>
+              ) : (
+                <SignInButton mode="modal" />
+              )}
             </div>
           </header>
           <main className="max-w-4xl mx-auto px-6 py-8">{children}</main>
