@@ -17,7 +17,7 @@ def get_by_id(db: Session, label_id: uuid.UUID) -> Label | None:
 
 
 def create(db: Session, data: LabelCreate) -> Label:
-    label = Label(name=data.name, color=data.color)
+    label = Label(name=data.name, color=data.color, description=data.description)
     db.add(label)
     db.commit()
     db.refresh(label)
@@ -32,6 +32,8 @@ def update(db: Session, label_id: uuid.UUID, data: LabelUpdate) -> Label | None:
         label.name = data.name
     if data.color is not None:
         label.color = data.color
+    if data.description is not None:
+        label.description = data.description
     db.commit()
     db.refresh(label)
     return label

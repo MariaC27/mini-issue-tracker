@@ -30,6 +30,7 @@ class Issue(Base):
     status: Mapped[IssueStatus] = mapped_column(default=IssueStatus.open)
     priority: Mapped[IssuePriority] = mapped_column(default=IssuePriority.medium)
     creator_id: Mapped[str] = mapped_column(String(255), nullable=False)
+    due_date: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
@@ -44,6 +45,7 @@ class IssueCreate(BaseModel):
     description: str | None = None
     status: IssueStatus = IssueStatus.open
     priority: IssuePriority = IssuePriority.medium
+    due_date: datetime | None = None
     label_ids: list[uuid.UUID] = []
 
 
@@ -52,6 +54,7 @@ class IssueUpdate(BaseModel):
     description: str | None = None
     status: IssueStatus | None = None
     priority: IssuePriority | None = None
+    due_date: datetime | None = None
     label_ids: list[uuid.UUID] | None = None
 
 
@@ -64,6 +67,14 @@ class IssueRead(BaseModel):
     status: IssueStatus
     priority: IssuePriority
     creator_id: str
+    due_date: datetime | None
     created_at: datetime
     updated_at: datetime
     labels: list[LabelRead] = []
+
+
+class IssueStats(BaseModel):
+    open: int
+    in_progress: int
+    closed: int
+    total: int

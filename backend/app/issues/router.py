@@ -8,7 +8,7 @@ from fastapi import APIRouter, HTTPException, status
 from app.dependencies import CurrentUser, DbSession
 from app.enums import IssuePriority, IssueStatus
 from app.issues import service
-from app.issues.models import IssueCreate, IssueRead, IssueUpdate
+from app.issues.models import IssueCreate, IssueRead, IssueStats, IssueUpdate
 
 router = APIRouter(prefix="/issues", tags=["issues"])
 
@@ -28,6 +28,11 @@ def list_issues(
 @router.post("", response_model=IssueRead, status_code=status.HTTP_201_CREATED)
 def create_issue(data: IssueCreate, db: DbSession, current_user: CurrentUser) -> IssueRead:
     return service.create(db, data, creator_id=current_user.user_id)
+
+
+@router.get("/stats", response_model=IssueStats)
+def get_stats(db: DbSession, _: CurrentUser) -> IssueStats:
+    return service.get_stats(db)
 
 
 @router.get("/{issue_id}", response_model=IssueRead)
@@ -51,3 +56,19 @@ def delete_issue(issue_id: uuid.UUID, db: DbSession, _: CurrentUser) -> None:
     deleted = service.delete(db, issue_id)
     if not deleted:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Issue not found")
+
+
+@router.post("/{issue_id}/labels/{label_id}", response_model=IssueRead)
+def add_label(issue_id: uuid.UUID, label_id: uuid.UUID, db: DbSession, _: CurrentUser) -> IssueRead:
+    issue = service.add_label(db, issue_id, label_id)
+    if issue is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Issue or label not found")
+    return issue
+
+
+@router.delete("/{issue_id}/labels/{label_id}", response_model=IssueRead)
+def remove_label(issue_id: uuid.UUID, label_id: uuid.UUID, db: DbSession, _: CurrentUser) -> IssueRead:
+    issue = service.remove_label(db, issue_id, label_id)
+    if issue is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Issue not found")
+    return issue
