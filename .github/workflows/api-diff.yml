@@ -40,7 +40,7 @@ jobs:
           python -m venv venv
           venv/bin/pip install -q --upgrade pip
           venv/bin/pip install -q -e "./backend"
-          venv/bin/pip install -q api-lens
+          venv/bin/pip install -q openapi-lens
 
       - name: Generate head spec
         run: venv/bin/apilens generate head_spec.json

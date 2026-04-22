@@ -39,7 +39,7 @@ jobs:
           venv/bin/pip install -q --upgrade pip
           venv/bin/pip install -q -e "./backend"
           # Install api-lens
-          venv/bin/pip install -q api-lens
+          venv/bin/pip install -q openapi-lens
 
       - name: Write snapshot
         id: write_snapshot
