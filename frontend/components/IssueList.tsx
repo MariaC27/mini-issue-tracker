@@ -22,6 +22,7 @@ export default function IssueList() {
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState<IssueStatus | "">("");
   const [priority, setPriority] = useState<IssuePriority | "">("");
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
@@ -41,7 +42,7 @@ export default function IssueList() {
     }
     load();
     return () => { cancelled = true; };
-  }, [status, priority, getToken]);
+  }, [status, priority, refreshKey, getToken]);
 
   return (
     <div>
@@ -78,7 +79,7 @@ export default function IssueList() {
       ) : (
         <div className="flex flex-col gap-2">
           {issues.map((issue) => (
-            <IssueCard key={issue.id} issue={issue} />
+            <IssueCard key={issue.id} issue={issue} onUpdate={() => setRefreshKey((k) => k + 1)} />
           ))}
         </div>
       )}

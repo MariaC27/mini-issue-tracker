@@ -8,6 +8,7 @@ import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { deleteIssue, getIssue, listLabels, updateIssue } from "@/lib/api";
 import { Issue, IssuePriority, IssueStatus, Label } from "@/lib/types";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -98,6 +99,9 @@ export default function IssueDetail({ id }: { id: string }) {
   if (!editing) {
     return (
       <div className="max-w-xl">
+        <Link href="/" className="text-sm text-muted-foreground hover:text-foreground mb-4 inline-block">
+          ← All Issues
+        </Link>
         <div className="flex items-start justify-between gap-4 mb-4">
           <h1 className="text-2xl font-semibold">{issue.title}</h1>
           <div className="flex gap-2 shrink-0">
@@ -142,6 +146,9 @@ export default function IssueDetail({ id }: { id: string }) {
 
   return (
     <div className="max-w-xl">
+      <Link href="/" className="text-sm text-muted-foreground hover:text-foreground mb-4 inline-block">
+        ← All Issues
+      </Link>
       <h1 className="text-2xl font-semibold mb-6">Edit Issue</h1>
 
       <div className="flex flex-col gap-4">

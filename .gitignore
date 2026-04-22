@@ -20,6 +20,9 @@ node_modules/
 # Docker volumes
 postgres_data/
 
+# Local dev notes
+DEV.md
+
 # OS
 .DS_Store
 
