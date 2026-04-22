@@ -39,7 +39,7 @@ jobs:
         run: |
           python -m venv venv
           venv/bin/pip install -q --upgrade pip
-          venv/bin/pip install -q -e "."
+          venv/bin/pip install -q -e "./backend"
           venv/bin/pip install -q api-lens
 
       - name: Generate head spec

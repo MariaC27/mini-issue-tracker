@@ -37,8 +37,7 @@ jobs:
         run: |
           python -m venv venv
           venv/bin/pip install -q --upgrade pip
-          # Install your application (adjust path as needed)
-          venv/bin/pip install -q -e "."
+          venv/bin/pip install -q -e "./backend"
           # Install api-lens
           venv/bin/pip install -q api-lens
 
