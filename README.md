@@ -1,6 +1,6 @@
 # Mini Issue Tracker
 
-A simple full-stack issue tracking app built as a realistic test bed for [ApiLens](https://github.com/OcularEngineering/api-lens).
+A simple full-stack issue tracking app built as a realistic test bed for [ApiLens](https://github.com/MariaC27/api-lens).
 
 The goal is to have a real CRUD app with a meaningful FastAPI backend so ApiLens snapshot and diff workflows have something genuine to run against.
 

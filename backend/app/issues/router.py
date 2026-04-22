@@ -20,8 +20,9 @@ def list_issues(
     status_filter: IssueStatus | None = None,
     priority: IssuePriority | None = None,
     label_id: uuid.UUID | None = None,
+    search: str | None = None,
 ) -> list[IssueRead]:
-    return service.list_issues(db, status=status_filter, priority=priority, label_id=label_id)
+    return service.list_issues(db, status=status_filter, priority=priority, label_id=label_id, search=search)
 
 
 @router.post("", response_model=IssueRead, status_code=status.HTTP_201_CREATED)

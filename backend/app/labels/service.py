@@ -5,7 +5,7 @@ import uuid
 
 from sqlalchemy.orm import Session
 
-from app.labels.models import Label, LabelCreate
+from app.labels.models import Label, LabelCreate, LabelUpdate
 
 
 def list_labels(db: Session) -> list[Label]:
@@ -19,6 +19,19 @@ def get_by_id(db: Session, label_id: uuid.UUID) -> Label | None:
 def create(db: Session, data: LabelCreate) -> Label:
     label = Label(name=data.name, color=data.color)
     db.add(label)
+    db.commit()
+    db.refresh(label)
+    return label
+
+
+def update(db: Session, label_id: uuid.UUID, data: LabelUpdate) -> Label | None:
+    label = get_by_id(db, label_id)
+    if label is None:
+        return None
+    if data.name is not None:
+        label.name = data.name
+    if data.color is not None:
+        label.color = data.color
     db.commit()
     db.refresh(label)
     return label
